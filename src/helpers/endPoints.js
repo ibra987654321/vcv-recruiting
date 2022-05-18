@@ -1,0 +1,5 @@
+export const API = '/api'
+export const USER = '/user'
+export const SAVE = '/save'
+export const QUESTION = '/question'
+export const TEST = '/test'
