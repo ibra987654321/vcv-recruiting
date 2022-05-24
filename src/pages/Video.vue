@@ -37,6 +37,9 @@
                         <span class="sr-only">Loading...</span>
                       </div>
                     </n-button>
+<!--                    <a ref="downloadButton" class="button">-->
+<!--                      Download-->
+<!--                    </a>-->
                   </div>
                 </div>
                 <div v-show="recording" class="col-lg-12">
@@ -127,12 +130,10 @@ export default {
   computed: {
     selected() {
       try {
-        // eslint-disable-next-line vue/no-async-in-computed-properties
         return this.questions[this.iterator]
       } catch (e) {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-        this.doneCard = true
-        return console.log('Вопросов нет')
+        return this.doneCard = true
       }
     }
   },
@@ -193,6 +194,7 @@ export default {
               this.videoUrl = URL.createObjectURL(recordedBlob);
               this.blob = recordedBlob
               this.recording = false
+              this.$refs.recording.src = URL.createObjectURL(recordedBlob);
             })
             .catch();
            }
@@ -210,9 +212,7 @@ export default {
         }
         this.iterator++
         this.recording = true
-      } catch (e) {
-        console.log(e.message)
-      }
+      } catch (e) {}
 
     }
   },
