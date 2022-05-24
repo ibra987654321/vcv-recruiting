@@ -9,14 +9,13 @@ import MainFooter from "./layout/MainFooter.vue";
 import Testing from "@/pages/Testing";
 import StarterNavbar from "@/layout/StarterNavbar";
 import Video from "@/pages/Video";
+import {getToken, parseJwt, removeToken} from "@/helpers/helpers";
 
 Vue.use(Router);
 
-export default new Router({
-  linkExactActiveClass: "active",
-  routes: [
+const routes = [
     {
-      path: "/",
+      path: "/index",
       name: "index",
       components: { default: Index, header: MainNavbar, footer: MainFooter },
       props: {
@@ -25,7 +24,7 @@ export default new Router({
       },
     },
     {
-      path: "/landing",
+      path: "/",
       name: "landing",
       components: { default: Landing, header: MainNavbar, footer: MainFooter },
       props: {
@@ -44,7 +43,8 @@ export default new Router({
     {
       path: "/profile",
       name: "profile",
-      components: {default: Profile, footer: MainFooter},
+      meta: {auth: true},
+      components: {default: Profile, header: StarterNavbar, footer: MainFooter},
       props: {
         header: {colorOnScroll: 100},
         footer: {backgroundColor: "black"},
@@ -53,6 +53,7 @@ export default new Router({
     {
       path: "/testing",
       name: "testing",
+      meta: {auth: true},
       components: { default: Testing,header: StarterNavbar, footer: MainFooter },
       props: {
         header: { colorOnScroll: 100 },
@@ -62,18 +63,46 @@ export default new Router({
     {
       path: "/video",
       name: "video",
+      meta: {auth: true},
       components: { default: Video,header: StarterNavbar, footer: MainFooter },
       props: {
         header: { colorOnScroll: 100 },
         footer: { backgroundColor: "black" },
       },
     },
-  ],
-  scrollBehavior: (to) => {
-    if (to.hash) {
-      return { selector: to.hash };
-    } else {
-      return { x: 0, y: 0 };
+  ]
+
+  const router = new Router({
+    base: process.env.BASE_URL,
+    routes,
+    scrollBehavior: (to) => {
+      if (to.hash) {
+        return { selector: to.hash };
+      } else {
+        return { x: 0, y: 0 };
+      }
+    },
+  })
+    if (getToken()) {
+      const exp = parseJwt(getToken()).exp
+      const cur = Math.floor(Date.now() / 1000)
+      if (cur >= exp) {
+        removeToken()
+      }
     }
-  },
-});
+
+  router.beforeEach((to, from, next) => {
+    const requireAuth = to.matched.some(record => record.meta.auth)
+    const currentUser = getToken()
+
+    if (requireAuth && !currentUser) {
+      next('/login')
+    } else {
+      next()
+    }
+  })
+
+
+export default router
+
+

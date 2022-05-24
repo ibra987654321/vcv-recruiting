@@ -1,11 +1,11 @@
 <template>
   <div>
     <div class="page-header page-header-small">
-      <parallax
-        class="page-header-image"
-        style="background-image: url('img/job.jpeg')"
-      >
-      </parallax>
+<!--      <parallax-->
+<!--        class="page-header-image"-->
+<!--        style="background-image: url('img/job.jpeg')"-->
+<!--      >-->
+<!--      </parallax>-->
       <div class="content-center">
         <div class="container">
           <h1 class="title">А ты готов раскрыть свой потенциал?</h1>
@@ -230,8 +230,9 @@
   </div>
 </template>
 <script>
-import { Button, FormGroupInput } from "@/components";
-import {email, required, minLength} from 'vuelidate/lib/validators'
+import {Button, FormGroupInput } from "@/components";
+import {email, required, minLength} from 'vuelidate/lib/validators';
+
 export default {
   name: "landing",
   bodyClass: "landing-page",
@@ -270,6 +271,11 @@ export default {
 };
 </script>
 <style scoped>
+.page-header {
+  background-image: url('../../public/img/job.jpeg');
+  background-size: cover;
+  background-repeat: no-repeat;
+}
 .opacity {
   opacity: 0.8;
 }

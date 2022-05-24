@@ -26,6 +26,9 @@ export default {
                 store.rootState.modals.mini = true
                 store.rootState.modals.type.success = true
                 store.rootState.modals.text = 'Регистрация прошла успешно! Проверьте свою почту'
+                store.form.name = ''
+                store.form.email = ''
+                store.form.phoneNumber = ''
             }).catch(e => {
                 store.rootState.loading = false
                 store.rootState.modals.mini = true

@@ -8,6 +8,7 @@ import router from "@/router";
 
 import landingForm from "@/store/landingForm";
 import testing from "@/store/testing";
+import video from "@/store/video";
 
 Vue.use(Vuex);
 
@@ -82,5 +83,6 @@ export default new Vuex.Store({
     modules: {
         landingForm,
         testing,
+        video
     }
 });

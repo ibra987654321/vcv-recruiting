@@ -70,6 +70,7 @@ export default {
     valid:''
   }),
   mounted() {
+    this.$store.state.loading = false
     const q = this.$store.dispatch('getQuestions')
     q.then(r => {
       r.map(i => this.answers.push(i.id))

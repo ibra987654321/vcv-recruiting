@@ -1,9 +1,9 @@
 <template>
-  <div class="page-header clear-filter" filter-color="orange">
-    <div
-      class="page-header-image"
-      style="background-image: url('img/login.jpg')"
-    ></div>
+  <div class="page-header clear-filter" filter-color="warning">
+<!--    <div-->
+<!--      class="page-header-image"-->
+<!--      style="background-image: url('img/login.jpg')"-->
+<!--    ></div>-->
     <div class="content">
       <div class="container">
         <div class="col-md-5 ml-auto mr-auto">
@@ -80,6 +80,9 @@ export default {
       password: ''
     }
   }),
+  mounted() {
+    this.$store.state.loading = false
+  },
   methods: {
     async submitHandler() {
       if (this.$v.$invalid) {
@@ -87,8 +90,15 @@ export default {
         return;
       }
       await this.$store.dispatch('login', this.form)
-    }
+    },
+
   }
 };
 </script>
-<style></style>
+<style scoped>
+.page-header {
+  background-image: url("../../public/img/job.jpeg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+</style>

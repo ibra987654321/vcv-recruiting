@@ -25,7 +25,7 @@ export default {
         },
         getQuestions(store) {
             store.rootState.loading = true
-            const questions = axios(`${environment.authAPI + API + QUESTION}/getAll`, {
+            const questions = axios(`${environment.authAPI + API + QUESTION}/forTest`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
