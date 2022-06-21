@@ -8,43 +8,22 @@
         <card class="card_profile" header-classes="text-center" >
           <template slot="header">
             <h3 class="card-title title-up">Тестирование</h3>
-<!--            <div class="social-line">-->
-<!--              <a-->
-<!--                  href="#pablo"-->
-<!--                  class="btn btn-neutral btn-facebook btn-icon btn-round"-->
-<!--              >-->
-<!--                <i class="fab fa-facebook-square"></i>-->
-<!--              </a>-->
-<!--              <a-->
-<!--                  href="#pablo"-->
-<!--                  class="btn btn-neutral btn-twitter btn-icon btn-lg btn-round"-->
-<!--              >-->
-<!--                <i class="fab fa-twitter"></i>-->
-<!--              </a>-->
-<!--              <a-->
-<!--                  href="#pablo"-->
-<!--                  class="btn btn-neutral btn-google btn-icon btn-round"-->
-<!--              >-->
-<!--                <i class="fab fa-google-plus"></i>-->
-<!--              </a>-->
-<!--            </div>-->
           </template>
           <template>
             <div class="row">
-              <div class="col-sm-6 col-lg-12" v-for="item in questions" :key="item.id">
-                <p class="category">{{ item.questionText }}</p>
+              <div class="col-sm-6 col-lg-12">
+                <p class="category">{{ questions[iterator].questionText }}</p>
                 <div class="d-flex flex-column">
-                    <div class="pl-4  mb-2 d-flex align-items-center" v-for="qu in item.answers" :key="qu.id">
-                      <input type="radio" :id="qu.id" v-model="answers[item.id]" :value="qu.content">
+                    <div class="pl-4  mb-2 d-flex align-items-center" v-for="qu in questions[iterator].answers" :key="qu.id">
+                      <input type="radio" :id="qu.id" v-model="answers[questions[iterator].position -1]" :value="qu">
                       <label class="mb-0 ml-2" :for="qu.id">{{qu.content}}</label>
                     </div>
-<!--                  <n-radio v-for="qu in item.answers" :key="qu.id" v-model="data" :value="qu.content"> {{qu.content}}</n-radio>-->
                 </div>
               </div>
             </div>
           </template>
           <div class="card-footer text-center">
-            <n-button type="warning"  @click="submit" round size="lg">Далее</n-button>
+            <n-button type="warning"  @click="submit(questions[iterator].questionText, answers[questions[iterator].position -1], questions[iterator].key)" round size="lg">Далее</n-button>
           </div>
         </card>
       </div>
@@ -55,6 +34,7 @@
 <script>
 import {Card, FormGroupInput, Button, Radio} from '@/components';
 import router from "@/router";
+
 export default {
   name: "Testing",
   components: {
@@ -65,46 +45,61 @@ export default {
   },
   data:() => ({
     answers: [],
+    correct: [],
     questions: [],
     data: [],
-    valid:''
+    valid:false,
+    iterator: 0
   }),
   mounted() {
     this.$store.state.loading = false
     const q = this.$store.dispatch('getQuestions')
     q.then(r => {
-      r.map(i => this.answers.push(i.id))
       this.questions = r
-         r.map((q, idx) => {
-           this.answers[idx] = q.answers.map(i => i.id)
-            const obj ={
-            question: q.questionText
-            }
-           this.data.push(obj)
-          })
     })
   },
+  computed: {},
   methods: {
-    submit() {
-      const answers = this.answers.filter(i =>  typeof(i) == 'string')
-      answers.forEach((i, idx)=> {
-        this.data[idx].answer = i
+    submit(q, a, k) {
+      const obj = {}
+      this.answers.map(i => {
+        obj.answer = i.content
+        obj.correct = i.correct
+        obj.question = q
+        obj.key = k
+        i.question = q
       })
-     this.data.filter(i => {
-       if (i.hasOwnProperty('answer') === false) {
+       if (a === undefined) {
          this.valid =  false
        } else {  this.valid = true }
-      })
       if (this.valid) {
-        this.$store.dispatch('sendAnswer', this.data)
-        router.push({name: 'video'})
+        this.data.push(obj)
+        this.iterator++
+        if (this.iterator >= this.questions.length -1) {
+          this.$store.dispatch('sendAnswer', this.data)
+          this.$store.dispatch('percentage').then(r => {
+            if (r >= 70) {
+              router.push({name: 'video'})
+            } else {
+              router.push({name: 'failed'})
+            }
+          })
+        }
       } else {
         this.$store.state.modals.mini = true
         this.$store.state.modals.type.error = true
-        this.$store.state.modals.text = 'Ответьте на все вопросы'
+        this.$store.state.modals.text = 'Выберите один из ответов'
       }
     },
+  },
+  beforeRouteLeave(to, from, next) {
+    if (from.name === 'testing' && (to.name === 'login' || to.name === 'landing' || to.name === 'profile') ) {
+      next(false);
+    } else {
+      next();
+    }
   }
+
 }
 </script>
 

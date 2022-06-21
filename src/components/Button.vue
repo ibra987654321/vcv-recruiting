@@ -5,6 +5,10 @@
     :type="nativeType"
     class="btn"
     :class="classes"
+    :style="color ? `width: 100%;
+                  background-color: #ffcd33;
+                  color: ${color};
+                  font-weight: ${font}; font-size: ${fz}; border-radius: 10px` : ''"
   >
     <span class="btn-label" v-if="$slots.label">
       <slot name="label"></slot>
@@ -38,7 +42,10 @@ export default {
     link: Boolean,
     icon: Boolean,
     wide: Boolean,
-    size: String
+    size: String,
+    color: String,
+    font: String,
+    fz: String
   },
   computed: {
     classes() {

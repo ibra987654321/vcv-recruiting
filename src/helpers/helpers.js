@@ -15,6 +15,16 @@ export const getId = () => localStorage.getItem('candidate-id')
 export const removeId = () => {
     localStorage.removeItem('candidate-id')
 }
+export function setCandidateType(id) {
+    localStorage.setItem('candidateType', id)
+}
+
+export function getCandidateType() {
+   return localStorage.getItem('candidateType')
+}
+export const removeCandidateType = () => {
+    localStorage.removeItem('candidateType')
+}
 export const parseJwt = (token) => {
     const base64Url = token.split('.')[1];
     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');

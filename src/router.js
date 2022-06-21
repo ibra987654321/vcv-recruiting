@@ -9,7 +9,9 @@ import MainFooter from "./layout/MainFooter.vue";
 import Testing from "@/pages/Testing";
 import StarterNavbar from "@/layout/StarterNavbar";
 import Video from "@/pages/Video";
+import Completed from "@/pages/Completed";
 import {getToken, parseJwt, removeToken} from "@/helpers/helpers";
+import Failed from "@/pages/Failed";
 
 Vue.use(Router);
 
@@ -28,8 +30,8 @@ const routes = [
       name: "landing",
       components: { default: Landing, header: MainNavbar, footer: MainFooter },
       props: {
-        header: { colorOnScroll: 300 },
-        footer: { backgroundColor: "ffcd33" },
+        header: { colorOnScroll: 100 },
+        footer: { backgroundColor: "black" },
       },
     },
     {
@@ -43,7 +45,6 @@ const routes = [
     {
       path: "/profile",
       name: "profile",
-      meta: {auth: true},
       components: {default: Profile, header: StarterNavbar, footer: MainFooter},
       props: {
         header: {colorOnScroll: 100},
@@ -65,6 +66,26 @@ const routes = [
       name: "video",
       meta: {auth: true},
       components: { default: Video,header: StarterNavbar, footer: MainFooter },
+      props: {
+        header: { colorOnScroll: 100 },
+        footer: { backgroundColor: "black" },
+      },
+    },
+    {
+      path: "/completed",
+      name: "completed",
+      meta: {auth: true},
+      components: { default: Completed,header: StarterNavbar, footer: MainFooter },
+      props: {
+        header: { colorOnScroll: 100 },
+        footer: { backgroundColor: "black" },
+      },
+    },
+    {
+      path: "/failed",
+      name: "failed",
+      meta: {auth: true},
+      components: { default: Failed,header: StarterNavbar, footer: MainFooter },
       props: {
         header: { colorOnScroll: 100 },
         footer: { backgroundColor: "black" },

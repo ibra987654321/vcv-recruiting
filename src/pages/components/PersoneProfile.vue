@@ -97,37 +97,37 @@
             </div>
             <div class="row">
               <div class="col-lg-12 text-center">
-                <h3 class="card-title title-up">Образования</h3>
+                <h3 class="card-title title-up">Опыт</h3>
               </div>
               <div class="col-lg-12">
                   <div class="form-group w-25">
-                    <select v-model="form.education.type" class="form-control">
-                      <option disabled selected>Образование</option>
-                      <option v-for="item in educationLevels" :key="item" selected>{{ item }}</option>
+                    <select v-model="form.experience.name" class="form-control">
+                      <option disabled selected>Опыт работы</option>
+                      <option v-for="item in experienceLevel" :key="item" selected>{{ item }}</option>
                     </select>
                   </div>
               </div>
               <div class="col-lg-12">
-                <div class="row w-100" v-if="validForm">
+                <div class="row w-100" v-if="form.experience.name !== 'Нет опыта'">
                   <div class="col-lg-12">
                     <fg-input
-                        v-model="form.education.speciality"
-                        placeholder="Специальность"
+                        v-model="form.experience.position"
+                        placeholder="Позиция"
                     >
                     </fg-input>
                   </div>
                   <div class="col-lg-6">
                     <fg-input
-                        v-model="form.education.name"
-                        placeholder="Название учебного заведения"
+                        v-model="form.experience.name"
+                        placeholder="Название компании"
                     >
                     </fg-input>
                   </div>
                   <div class="col-lg-3">
                     <fg-input>
                       <el-date-picker
-                          placeholder="Дата поступления"
-                          v-model="form.education.startDate"
+                          placeholder="Дата начало"
+                          v-model="form.experience.startDate"
                       >
                       </el-date-picker>
                     </fg-input>
@@ -136,7 +136,7 @@
                     <fg-input>
                       <el-date-picker
                           placeholder="Дата окончания"
-                          v-model="form.education.endDate"
+                          v-model="form.experience.endDate"
                       >
                       </el-date-picker>
                     </fg-input>
@@ -146,23 +146,41 @@
             </div>
             <div class="row">
               <div class="col-lg-12 text-center">
-                <h3 class="card-title title-up">Знание языков</h3>
+                <h3 class="card-title title-up">Образования</h3>
               </div>
               <div class="col-lg-12">
-                <div class="d-flex" v-for="item in form.languages" :key="item.lang">
-                  <n-checkbox v-model="item.active">{{item.lang}}</n-checkbox>
-                  <div v-if="item.active" class="d-flex justify-content-between">
-                    <n-radio v-model="item.level" v-for="level in levels" :key="level" :label="level">{{ level }}</n-radio>
-                  </div>
+                <div class="form-group w-25">
+                  <select v-model="form.education" class="form-control">
+                    <option disabled selected>Опыт работы</option>
+                    <option v-for="item in educationLevels" :key="item" selected>{{ item }}</option>
+                  </select>
                 </div>
               </div>
             </div>
-            <div class="row">
+            <div class="row" v-for="(i) in knowledgeType" :key="i.id" >
               <div class="col-lg-12 text-center">
-                <h3 class="card-title title-up">Программные навыки</h3>
+                <h3 class="card-title title-up" >{{i.name}}</h3>
               </div>
-              <div class="col-lg-4" v-for="(item, idx) in form.programs" :key="idx">
-                <n-checkbox v-model="item.active" >{{item.name}}</n-checkbox>
+              <div class="col-lg-12">
+                <div class="d-flex" v-for="(item) in i.knowledgeList" :key="item.id">
+                  <input type="checkbox" class="mt-1 checkbox" :id="item.id" v-model="picked[item.id]">
+                  <label :for="item.id">{{item.knowledgeName}}</label>
+                  <div v-if="picked[item.id] == true" class="d-flex">
+                    <div
+                        class="d-flex ml-3"
+                        v-for="(level) in item.levels" :key="level.id"
+                    >
+                      <input type="radio"
+                             class="mt-1 mr-1"
+                             :id="level.id"
+                             :value="{knowledge: item.knowledgeName, level: level.name, id: i.id}"
+                             v-model="answers[item.id]"
+                      />
+                      <label :for="level.id">{{ level.name }}</label>
+                    </div>
+                  </div>
+
+                </div>
               </div>
             </div>
             <div class="row">
@@ -204,6 +222,7 @@
 import {Card, FormGroupInput, Button, Checkbox, Radio} from "@/components";
 import {DatePicker} from "element-ui";
 import {email, required, minLength} from 'vuelidate/lib/validators'
+import {getCandidateType} from "@/helpers/helpers";
 
 export default {
   components: {
@@ -226,70 +245,45 @@ export default {
 
   },
   data:() => ({
-    levels: ['Начальный', 'Средний', 'Продвинутый', 'Свободно владеющий'],
+    knowledgeType: [],
+    names: [],
+    answers: [],
+    picked: [],
+    experienceLevel: ['Есть опыт', 'Нет опыта'],
     educationLevels: ['Среднее', 'Срд/специальное', 'Высшее неоконченное', 'Высшее', 'Нет образования'],
     schedule: ['Утренние', 'Дневные', 'Вечерние', 'Ночные'],
     form: {
-      vacancy: 'Operator',
-      name: '',
-      email: '',
+      name: 'Ибрагим',
+      email: 'ibragimmadiyarov@gmail.com',
       birthday: '',
       citizenship: 'Гражданство',
       maritalStatus: 'Семейное положение',
-      address: '',
-      phoneNumber: '',
-      education:{
-        type: 'Образование',
+      address: 'Бишкек',
+      phoneNumber: '703215487',
+      experience:{
         name: '',
         startDate: '',
         endDate: '',
-        speciality: ''
+        position: ''
       },
-      languages: [
-        {
-          active: false,
-          lang: 'Кыргызский',
-          level: '',
-        },
-        {
-          active: false,
-          lang: 'Русский',
-          level: '',
-        },
-        {
-          active: false,
-          lang: 'Английский',
-          level: '',
-        },
-        {
-          active: false,
-          lang: 'Турецкий',
-          level: '',
-        },
-        {
-          active: false,
-          lang: 'Узбекский',
-          level: '',
-        },
-      ],
-      programs: [
-        {
-          name: 'Word',
-          active: false,
-        },
-        {
-          name: 'Excel',
-          active: false,
-        },
-        {
-          name: 'PowerPoint',
-          active: false,
-        },
-      ],
-      schedule: 'График'
+      education: "string",
+      schedule: 'График',
+      candidateType_id: Number(getCandidateType()),
     },
 
   }),
+  created() {
+    this.$store.dispatch('knowledgeType').then(r => {
+      this.knowledgeType = r
+      r.map((i, idx) => {
+        const name = i.name
+        const id = i.id
+        this.names.push({name})
+        this.names[idx].id = id
+      })
+    })
+
+  },
   computed: {
     validForm() {
       if (this.form.education.type !== 'Нет образования') {
@@ -297,7 +291,7 @@ export default {
       } else {
         return false
       }
-    }
+    },
   },
   methods: {
     submitHandler() {
@@ -306,7 +300,32 @@ export default {
         this.$v.$touch();
         return;
       }
-        this.$store.dispatch('submitForm', this.form)
+        this.save()
+    },
+    save() {
+      this.answers = this.answers.filter(i => typeof (i) !== 'null')
+      const result = this.names.map(item2 => {
+        // отфильтровали массив 1 на наличие элементов с соответствующим id
+        const withCurrentId = this.answers.filter(item1 => item1['id'] === item2['id']);
+        item2.questionnaireAnswers = []
+        item2.questionnaireAnswers.push(...withCurrentId)
+
+        return { ...item2 };
+      });
+
+      const newResult = result.map(i => {
+        return {
+          name: i.name,
+          questionnaireAnswers: i.questionnaireAnswers.map(r => {
+            return {
+              knowledge: r.knowledge,
+              level: r.level
+            }
+          })
+        }
+      })
+      this.form.questionnaireList = newResult
+      this.$store.dispatch('submitForm', this.form)
     }
   },
   watch: {

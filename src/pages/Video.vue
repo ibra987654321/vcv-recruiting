@@ -1,24 +1,58 @@
 <template>
   <div
-      class="section section-signup"
+      class=""
       style="background: linear-gradient(50deg, #fae6e6, hsla(179,54%,76%,1)); min-height: 700px;"
   >
-    <div class="container">
-      <div class="row person_container mx-auto">
-        <card v-if="!doneCard" class="card_profile" header-classes="text-center" >
-          <template slot="header">
-            <h3 class="card-title title-up">Видео</h3>
-          </template>
-          <template>
-            <div class="row">
+    <div class="">
+      <div class="row person_container container mx-auto mt-5">
+        <div class="col-md-12 container" v-if="doneCard">
+          <card  class="card_profile icons-container" header-classes="text-center">
+            <template slot="header">
+              <h3 class="card-title title-up">Все ваши ответы приняты</h3>
+              <h3 class="card-title title-up">В скором времени мы с Вами свяжемся!</h3>
+              <div class="section section-nucleo-icons">
+                <div class="container">
+                  <div class="row">
+                    <div class="col-lg-12 col-md-12 ">
+                      <div class="icons-container mx-auto">
+                        <i class="now-ui-icons ui-1_send"></i>
+                        <i class="now-ui-icons ui-2_like"></i>
+                        <i class="now-ui-icons transportation_air-baloon"></i>
+                        <i class="now-ui-icons text_bold"></i>
+                        <i class="now-ui-icons tech_headphones"></i>
+                        <i class="now-ui-icons emoticons_satisfied"></i>
+                        <i class="now-ui-icons shopping_cart-simple"></i>
+                        <i class="now-ui-icons objects_spaceship"></i>
+                        <i class="now-ui-icons media-2_note-03"></i>
+                        <i class="now-ui-icons ui-2_favourite-28"></i>
+                        <i class="now-ui-icons design_palette"></i>
+                        <i class="now-ui-icons clothes_tie-bow"></i>
+                        <i class="now-ui-icons location_pin"></i>
+                        <i class="now-ui-icons objects_key-25"></i>
+                        <i class="now-ui-icons travel_istanbul"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </template>
+          </card>
+        </div>
+        <div class="col-md-12 container mt-5 mb-5" v-else>
+          <card  class="card_profile mb-0" header-classes="text-center" >
+            <template slot="header">
+              <h3 class="card-title title-up">Видео</h3>
+            </template>
+            <template>
+              <div class="row">
                 <div v-show="recording" class="col-lg-12 text-center">
                   <h2>Запись</h2>
-                  <video :class="this.countDown < 5 ? 'redLine' : 'blueLine'" ref="preview" autoplay muted></video>
+                  <video :class="this.countDown < questions[iterator].milliseconds / 1000 ? 'redLine' : 'blueLine'" ref="preview" autoplay muted></video>
                   <div class="d-flex justify-content-around">
-                    <n-button v-show="this.countDown === 5" type="warning" round size="lg" @click="startVideo">
+                    <n-button v-if="this.countDown === msController" type="warning" round size="lg" @click="startVideo(questions[iterator].milliseconds)">
                       Начать
                     </n-button>
-                    <n-button v-show="this.countDown !== 5" type="primary" class="display" round simple>{{ countDown }}</n-button>
+                    <n-button v-else type="primary" class="display" round simple>{{ countDown }}</n-button>
                   </div>
                 </div>
                 <div v-show="!recording" class="col-lg-12 text-center">
@@ -29,7 +63,7 @@
                       Переснять
                     </n-button >
                     <n-button
-                        @click="submitHandler"
+                        @click="submitHandler()"
                         type="warning" round size="lg"
                     >
                       <div v-if="!$store.state.loading">Отправить</div>
@@ -37,50 +71,17 @@
                         <span class="sr-only">Loading...</span>
                       </div>
                     </n-button>
-<!--                    <a ref="downloadButton" class="button">-->
-<!--                      Download-->
-<!--                    </a>-->
                   </div>
                 </div>
                 <div v-show="recording" class="col-lg-12">
                   <div class="text-center">
-                    <h4>{{ selected.questionText }}</h4>
-                  </div>
-                </div>
-            </div>
-          </template>
-        </card>
-        <card v-if="doneCard" class="card_profile icons-container" header-classes="text-center">
-          <template slot="header">
-            <h3 class="card-title title-up">Все ваши ответы приняты</h3>
-            <h3 class="card-title title-up">В скором времени мы с Вами свяжемся!</h3>
-            <div class="section section-nucleo-icons">
-              <div class="container">
-                <div class="row">
-                  <div class="col-lg-12 col-md-12 ">
-                    <div class="icons-container mx-auto">
-                      <i class="now-ui-icons ui-1_send"></i>
-                      <i class="now-ui-icons ui-2_like"></i>
-                      <i class="now-ui-icons transportation_air-baloon"></i>
-                      <i class="now-ui-icons text_bold"></i>
-                      <i class="now-ui-icons tech_headphones"></i>
-                      <i class="now-ui-icons emoticons_satisfied"></i>
-                      <i class="now-ui-icons shopping_cart-simple"></i>
-                      <i class="now-ui-icons objects_spaceship"></i>
-                      <i class="now-ui-icons media-2_note-03"></i>
-                      <i class="now-ui-icons ui-2_favourite-28"></i>
-                      <i class="now-ui-icons design_palette"></i>
-                      <i class="now-ui-icons clothes_tie-bow"></i>
-                      <i class="now-ui-icons location_pin"></i>
-                      <i class="now-ui-icons objects_key-25"></i>
-                      <i class="now-ui-icons travel_istanbul"></i>
-                    </div>
+                    <h4>{{ questions[iterator].questionText }}</h4>
                   </div>
                 </div>
               </div>
-            </div>
-          </template>
-        </card>
+            </template>
+          </card>
+        </div>
       </div>
     </div>
   </div>
@@ -90,6 +91,7 @@
 import 'vue-media-recorder/src/assets/scss/main.scss'
 import {Card, FormGroupInput, Button, Radio} from '@/components';
 import NButton from "@/components/Button";
+import {removeToken} from "@/helpers/helpers";
 
 export default {
   name: "Video",
@@ -112,29 +114,31 @@ export default {
     doneCard: false,
     blob: ''
   }),
-   created() {
-     this.$store.state.loading = false
-     navigator.mediaDevices.getUserMedia({
-       video: true,
-       audio: true
-     }).then(stream => {
-       this.$refs.preview.srcObject = stream;
-       this.$refs.preview.captureStream = this.$refs.preview.captureStream || this.$refs.preview.mozCaptureStream;
-       return new Promise(resolve => this.$refs.preview.onplaying = resolve);
-     })
-  },
   mounted() {
-    this.$store.dispatch('getVideoQuestions').then(r => this.questions.push(...r.data))
+    this.$store.dispatch('getVideoQuestions')
+    const q = this.$store.dispatch('getVideoQuestions')
+    q.then(r => {
+      this.iterator = this.$store.state.iterator
+      this.questions = r
+    })
+    // this.questions = this.$store.state.video.questionData[0]
+    this.countDown = this.questions[this.iterator].milliseconds / 1000
 
   },
+  created() {
+    this.$store.state.loading = false
+    navigator.mediaDevices.getUserMedia({
+      video: true,
+      audio: true
+    }).then(() => {
+      this.$refs.preview.captureStream = this.$refs.preview.captureStream || this.$refs.preview.mozCaptureStream;
+      return new Promise(resolve => this.$refs.preview.onplaying = resolve);
+    })
+  },
   computed: {
-    selected() {
-      try {
-        return this.questions[this.iterator]
-      } catch (e) {
-        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-        return this.doneCard = true
-      }
+    msController() {
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+      return this.countDown = this.questions[this.iterator].milliseconds / 1000
     }
   },
   methods: {
@@ -145,7 +149,7 @@ export default {
           this.countDownTimer()
         }, 1000)
       } else if (this.countDown === 0) {
-        this.countDown = 5
+        this.countDown = this.questions[this.iterator].milliseconds / 1000
       }
     },
     wait(delayInMS) {
@@ -178,7 +182,8 @@ export default {
     stop(stream) {
       stream.getTracks().forEach(track => track.stop());
     },
-    async startVideo(){
+    async startVideo(second){
+      this.recordingTimeMS = second
       if ('mediaDevices' in navigator && 'getUserMedia' in navigator.mediaDevices) {
         navigator.mediaDevices.getUserMedia({
           video: true,
@@ -204,11 +209,13 @@ export default {
         this.$store.state.loading = true
         let formData = new FormData();
         formData.append("multipartFile", this.blob)
-        formData.append("questionText", this.selected.questionText);
+        formData.append("questionText", this.questions[this.iterator].questionText);
+        formData.append("position", this.questions[this.iterator].position);
         await this.$store.dispatch('sendVideo', formData)
         this.$store.state.loading = false
-        if (this.questions.length === this.iterator + 1) {
+        if (this.$store.state.video.questionData[0].length === this.iterator + 1) {
           this.doneCard = true
+          removeToken()
         }
         this.iterator++
         this.recording = true
@@ -216,6 +223,13 @@ export default {
 
     }
   },
+  beforeRouteLeave(to, from, next) {
+    if (from.name === 'video' && (to.name === 'login' || to.name === 'landing' || to.name === 'profile' || to.name === 'testing') ) {
+      next(false);
+    } else {
+      next();
+    }
+  }
 }
 </script>
 
@@ -224,7 +238,7 @@ export default {
   font-size: 30px;
 }
 video {
-  max-width: 700px;
+  max-width: 500px;
   width: 100%;
   border-radius: 10px;
 }
@@ -239,9 +253,120 @@ video {
 }
 .card_profile {
   padding: 20px;
-  border-radius: 20px;
 }
 .text-center h3 {
   margin-top: 40px;
+}
+
+/*list css*/
+.list_question .card {
+  margin-bottom: 24px;
+  -webkit-box-shadow: 0 2px 4px rgb(126 142 177 / 10%);
+  box-shadow: 0 2px 4px rgb(126 142 177 / 10%);
+}
+.list_question .card {
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 0 solid #eaedf1;
+  border-radius: .25rem;
+}
+.activity-wid {
+  margin-left: 16px;
+}
+.mb-0 {
+  margin-bottom: 0!important;
+}
+.list-unstyled {
+  padding-left: 0;
+  list-style: none;
+}
+
+.activity-wid .activity-list {
+  position: relative;
+  padding: 0 0 33px 30px;
+}
+.active_list {
+  color: #ffcd33;
+}
+.activity-border:before {
+  content: "";
+  position: absolute;
+  height: 38px;
+  border-left: 3px dashed #eaedf1;
+  top: 40px;
+  left: 0;
+}
+
+.activity-wid .activity-list .activity-icon {
+  position: absolute;
+  left: -20px;
+  top: 0;
+  z-index: 2;
+}
+.avatar-sm {
+  height: 2.5rem;
+  width: 2.5rem;
+}
+
+.media {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: flex-start;
+}
+
+.me-3 {
+  margin-right: 1rem!important;
+}
+
+.font-size-15 {
+  font-size: 15px!important;
+}
+
+.font-size-14 {
+  font-size: 14px!important;
+}
+.text-muted {
+  color: #74788d!important;
+}
+
+.text-end {
+  text-align: right!important;
+}
+
+.font-size-13 {
+  font-size: 13px!important;
+}
+
+.avatar-title {
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  height: 100%;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 100%;
+}
+.bg-soft-primary {
+  background-color: rgba(82,92,229,.25)!important;
+}
+.bg-soft-success {
+  background-color: #ffcd33 !important;
 }
 </style>

@@ -1,8 +1,9 @@
 //== Buttons
 //
 //## For each of Bootstrap's buttons, define text, background and border color.
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300&family=Open+Sans:wght@300&display=swap');
 
-$sans-serif-family:          'Montserrat', 'Helvetica Neue',  Arial, sans-serif !default;
+$sans-serif-family:           'Fira Sans', sans-serif !default;
 
 $none:                       0   !default;
 $border-thin:                1px !default;
@@ -126,6 +127,7 @@ $margin-bottom:                 10px        !default;
 $border:                        1px solid   !default;
 $border-radius-extra-small:     0.125rem    !default;
 $border-radius-small:           0.1875rem   !default;
+$border-radius-middle:          10px   !default;
 $border-radius-large:           0.25rem     !default;
 $border-radius-extreme:         0.875rem    !default;
 

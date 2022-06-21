@@ -9,7 +9,7 @@
   >
     <template>
       <router-link v-popover:popover1 class="navbar-brand" to="/">
-        Рекрутинг
+        <img src="https://beeline.kg/binaries/content/gallery/mainsite/footer-logo/beeline_logo.svg" alt="">
       </router-link>
       <el-popover
         ref="popover1"
@@ -26,57 +26,49 @@
     <template slot="navbar-menu">
       <li class="nav-item">
         <router-link
-          :to="{ name: 'landing', hash: '#have-to' }"
+          :to="{ name: 'landing', hash: '#about-us' }"
           class="nav-link"
         >
-          <i class="now-ui-icons design_app"></i>
-          <p>Что у тебя будет?</p>
+          <p>О Нас</p>
         </router-link>
       </li>
       <li class="nav-item">
         <router-link
-          :to="{ name: 'landing', hash: '#need-know' }"
+          :to="{ name: 'landing', hash: '#advantages' }"
           class="nav-link"
         >
-          <i class="now-ui-icons business_briefcase-24"></i>
-          <p>Что нужно делать?</p>
+<!--          <i class="now-ui-icons business_briefcase-24"></i>-->
+          <p>Наши преимущества</p>
         </router-link>
       </li>
       <li class="nav-item">
         <router-link
-          :to="{ name: 'landing', hash: '#contact' }"
+          :to="{ name: 'landing', hash: '#teams' }"
           class="nav-link"
         >
-          <i class="now-ui-icons ui-1_email-85"></i>
-          <p>Контакты</p>
+<!--          <i class="now-ui-icons ui-1_email-85"></i>-->
+          <p>Команды</p>
         </router-link>
       </li>
-<!--      <drop-down-->
-<!--        tag="li"-->
-<!--        title="Examples"-->
-<!--        icon="now-ui-icons design_image"-->
-<!--        class="nav-item"-->
-<!--      >-->
-<!--        <nav-link to="/landing">-->
-<!--          <i class="now-ui-icons education_paper"></i> Landing-->
-<!--        </nav-link>-->
-<!--        <nav-link to="/login">-->
-<!--          <i class="now-ui-icons users_circle-08"></i> Login-->
-<!--        </nav-link>-->
-<!--        <nav-link to="/profile">-->
-<!--          <i class="now-ui-icons users_single-02"></i> Profile-->
-<!--        </nav-link>-->
-<!--        <nav-link to="/testing">-->
-<!--          <i class="now-ui-icons users_single-02"></i> Testing-->
-<!--        </nav-link>-->
-<!--      </drop-down>-->
-
+      <li>
+        <router-link class="nav-link"  :to="{ name: 'login' }">
+          <n-button
+              class="bg-light"
+              style="
+                  width: 123px;
+                  height: 39px;
+                  color: black;
+                  font-weight: bold; font-size: 14px; border-radius: 10px
+"
+          >Войти</n-button>
+        </router-link>
+      </li>
     </template>
   </navbar>
 </template>
 
 <script>
-import { DropDown, Navbar, NavLink } from "@/components";
+import { DropDown, Navbar, NavLink, Button } from "@/components";
 import { Popover } from "element-ui";
 
 export default {
@@ -88,15 +80,40 @@ export default {
   components: {
     // DropDown,
     Navbar,
-    // NavLink,
+    [Button.name]: Button,
     [Popover.name]: Popover,
   },
   data:() => ({
-  })
+  }),
 };
 </script>
 
 <style scoped>
+.navbar {
+  margin: 10px;
+  border-radius: 20px;
+  max-height: 50px;
+  background-color: #ffcd33 !important;;
+}
+.nav-item {
+  display: flex ;
+  align-items: center;
+}
+@media (max-width: 768px) {
+  .navbar {
+    width: 90%;
+  }
+}
+.navbar-brand img {
+  width: 100%;
+}
+.nav-link {
+  text-transform: none !important;
+  color: black !important;
+}
+.nav-link p {
+  font-size: 15px;
+}
 .navbar {
   font-size: 16px;
 }

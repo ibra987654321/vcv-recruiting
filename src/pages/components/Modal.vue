@@ -11,9 +11,9 @@
     </div>
     <p>{{ $store.state.modals.text }}</p>
     <template slot="footer">
-      <n-button type="neutral" link>Назад</n-button>
       <n-button type="neutral" link @click.native="$store.state.modals.mini = false"
       >Закрыть</n-button>
+      <n-button v-if="$store.state.modals.action !== ''" type="neutral" link @click="$store.state.modals.action">Войти</n-button>
     </template>
   </modal>
 </template>

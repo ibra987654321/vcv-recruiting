@@ -1,6 +1,6 @@
 .card{
   border: 0;
-  border-radius: $border-radius-small;
+  border-radius: $border-radius-middle;
   display: inline-block;
   position: relative;
   width: 100%;
@@ -32,6 +32,10 @@
 
   &[data-background-color="yellow"]{
       background-color: $warning-color;
+  }
+
+  &[data-background-color="beeline"]{
+    background-color: #ffcd33;
   }
 
   &[data-background-color="blue"]{

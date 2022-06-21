@@ -1,27 +1,25 @@
 <template>
-  <navbar position="fixed" type="warning" menu-classes="ml-auto">
-    <template >
-      <router-link v-popover:popover1 class="navbar-brand" to="/presentation">
-      Beeline
+  <navbar position="fixed" type="warning" class="navbar" menu-classes="ml-auto">
+    <template>
+      <router-link v-popover:popover1 class="navbar-brand" to="/">
+        <img src="https://beeline.kg/binaries/content/gallery/mainsite/footer-logo/beeline_logo.svg" height="26" alt="">
       </router-link>
       <el-popover
-        ref="popover1"
-        popper-class="popover"
-        placement="bottom"
-        width="200"
-        trigger="hover"
+          ref="popover1"
+          popper-class="popover"
+          placement="bottom"
+          width="200"
+          trigger="hover"
       >
         <div class="popover-body">
-          Пройдите тест до конца
+          При нажатии перейдешь на главную
         </div>
       </el-popover>
     </template>
     <template slot="navbar-menu">
-      <drop-down tag="li" title="Нужна помошь!">
-        <nav-link class="dropdown-item">
-          <i class="now-ui-icons shopping_box"></i> Помошь
-        </nav-link>
-      </drop-down>
+      <router-link v-popover:popover1 class="navbar-brand" to="/">
+        Главная страница
+      </router-link>
     </template>
   </navbar>
 </template>
@@ -33,14 +31,16 @@ import { Popover } from 'element-ui';
 export default {
   name: 'main-navbar',
   components: {
-    DropDown,
+    // DropDown,
     Navbar,
-    NavLink,
+    // NavLink,
     [Popover.name]: Popover
   }
 };
 </script>
 
 <style scoped>
-
+.navbar {
+  background-color: #ffcd33 !important;;
+}
 </style>

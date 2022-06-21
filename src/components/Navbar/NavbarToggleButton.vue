@@ -22,4 +22,8 @@ export default {
   }
 };
 </script>
-<style></style>
+<style>
+.navbar-toggler-bar {
+  background-color: black !important;
+}
+</style>
